@@ -190,3 +190,6 @@ details p{padding:0 22px 22px;line-height:1.7}
 .adm-btn{font:inherit;font-weight:700;font-size:14px;padding:11px 18px;border-radius:999px;border:0;background:var(--teal);color:#fff;cursor:pointer;text-decoration:none}
 .adm-btn.adm-sec{background:#fff;color:var(--text);border:1px solid var(--line)}
 .adm-msg{margin-top:12px;color:var(--tealD);font-weight:600;min-height:1.5em}
+.legal-body h2{font-size:clamp(18px,4vw,22px);font-weight:700;letter-spacing:-.02em;margin:28px 0 10px;color:var(--text)}
+.legal-body ul{list-style:disc;padding-left:22px;margin:0 0 16px;max-width:760px}
+.legal-body li{color:var(--soft);font-size:16.5px;line-height:1.7;margin-bottom:4px}

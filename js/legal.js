@@ -1,16 +1,53 @@
-// Conteúdo das páginas legais. Cada página tem chave própria (separação de conteúdos).
-// Os textos abaixo são EXEMPLOS de teste: substitua pelo conteúdo definitivo da empresa.
+// Conteúdo das páginas legais (espelha as páginas de referência em onsolutionsbrasil.com.br).
+// Formato do texto: "## Título" = subtítulo, "- item" = lista, linha em branco separa blocos.
 var LEGAL_PAGES = {
   "lgpd": {
     title: "LGPD e Proteção de Dados",
-    text: "A empresa valoriza a privacidade e a segurança dos dados pessoais de seus usuários, adotando medidas de proteção e tratamento das informações conforme a Lei Geral de Proteção de Dados (Lei nº 13.709/2018)."
+    text: [
+      "Última atualização: 12/11/2026",
+      "## Compromisso com a LGPD",
+      "A ON Solutions está comprometida com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018). Tratamos seus dados pessoais com transparência, segurança e responsabilidade.",
+      "## Controlador de Dados",
+      "ON Solutions\nEmail: contato@onsolutionsbrasil.com.br",
+      "## Bases Legais para Tratamento",
+      "- Consentimento: Newsletter, cookies de marketing\n- Execução de contrato: Prestação de serviços contratados\n- Interesse legítimo: Análises de uso, melhoria dos serviços\n- Obrigação legal: Cumprimento de legislação fiscal e tributária",
+      "## Seus Direitos como Titular",
+      "Conforme a LGPD, você possui os seguintes direitos:",
+      "- Confirmação da existência de tratamento\n- Acesso aos dados\n- Correção de dados incompletos ou desatualizados\n- Anonimização, bloqueio ou eliminação de dados desnecessários\n- Portabilidade dos dados\n- Eliminação dos dados tratados com consentimento\n- Informação sobre compartilhamento\n- Possibilidade de não fornecer consentimento e consequências\n- Revogação do consentimento",
+      "## Como Exercer seus Direitos",
+      "Para exercer qualquer um dos direitos listados acima, entre em contato conosco através do email: contato@onsolutionsbrasil.com.br\nResponderemos sua solicitação em até 15 dias úteis.",
+      "## Segurança",
+      "Implementamos medidas de segurança técnicas e administrativas para proteger os dados pessoais, incluindo criptografia, controle de acesso, backups e monitoramento.",
+      "## Retenção de Dados",
+      "Mantemos seus dados pessoais apenas pelo tempo necessário para as finalidades para as quais foram coletados, ou conforme exigido por lei."
+    ].join("\n\n")
   },
   "politica-de-privacidade": {
     title: "Política de Privacidade",
-    text: "As informações fornecidas pelos usuários, como nome, e-mail e telefone, poderão ser utilizadas para atendimento, comunicação e prestação dos serviços oferecidos pela empresa, respeitando as finalidades informadas e a legislação aplicável."
+    text: [
+      "Última atualização: 12/11/2026",
+      "## 1. Informações que Coletamos",
+      "A ON Solutions coleta informações pessoais que você nos fornece voluntariamente ao entrar em contato, assinar nossa newsletter, solicitar orçamentos ou utilizar nossos serviços. As informações podem incluir:",
+      "- Nome completo\n- Endereço de email\n- Número de telefone\n- Nome da empresa\n- Informações de projeto",
+      "## 2. Como Utilizamos suas Informações",
+      "Utilizamos as informações coletadas para:",
+      "- Responder às suas solicitações e mensagens\n- Enviar orçamentos e propostas comerciais\n- Enviar comunicações sobre nossos serviços (com consentimento)\n- Melhorar nossos serviços e experiência do usuário\n- Cumprir obrigações legais",
+      "## 3. Compartilhamento de Dados",
+      "Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros para fins de marketing. Podemos compartilhar informações com:",
+      "- Prestadores de serviço que nos auxiliam na operação do negócio\n- Autoridades legais, quando exigido por lei",
+      "## 4. Segurança dos Dados",
+      "Implementamos medidas técnicas e organizacionais para proteger suas informações contra acesso não autorizado, alteração, divulgação ou destruição.",
+      "## 5. Seus Direitos",
+      "Você tem o direito de:",
+      "- Acessar seus dados pessoais\n- Solicitar correção de dados incorretos\n- Solicitar exclusão de seus dados\n- Revogar consentimento\n- Solicitar portabilidade dos dados",
+      "## 6. Cookies",
+      "Utilizamos cookies para melhorar sua experiência em nosso site. Consulte nossa Política de Cookies para mais informações.",
+      "## 7. Contato",
+      "Para dúvidas sobre esta política ou exercer seus direitos, entre em contato conosco pelo email: contato@onsolutionsbrasil.com.br"
+    ].join("\n\n")
   }
 };
-var LEGAL_PREFIX = "on_legal_v1_";
+var LEGAL_PREFIX = "on_legal_v2_";
 
 function legalGet(key) {
   var saved = null;
@@ -20,16 +57,33 @@ function legalGet(key) {
 function legalSet(key, text) { window.localStorage.setItem(LEGAL_PREFIX + key, text); }
 function legalReset(key) { window.localStorage.removeItem(LEGAL_PREFIX + key); }
 
-// Renderiza texto puro em parágrafos (textContent evita injeção de HTML)
+// Renderiza o texto em títulos, listas e parágrafos (textContent evita injeção de HTML)
 function legalRender(el, text) {
   el.innerHTML = "";
   text.split(/\n\s*\n/).forEach(function (block) {
-    block = block.trim();
-    if (!block) return;
-    var p = document.createElement("p");
-    p.textContent = block;
-    p.style.whiteSpace = "pre-line";
-    el.appendChild(p);
+    var lines = block.split("\n").map(function (l) { return l.trim(); }).filter(Boolean);
+    if (!lines.length) return;
+    if (lines[0].indexOf("## ") === 0) {
+      var h = document.createElement("h2");
+      h.textContent = lines[0].slice(3);
+      el.appendChild(h);
+      lines = lines.slice(1);
+      if (!lines.length) return;
+    }
+    if (lines[0].indexOf("- ") === 0) {
+      var ul = document.createElement("ul");
+      lines.forEach(function (l) {
+        var li = document.createElement("li");
+        li.textContent = l.replace(/^-\s+/, "");
+        ul.appendChild(li);
+      });
+      el.appendChild(ul);
+    } else {
+      var p = document.createElement("p");
+      p.textContent = lines.join("\n");
+      p.style.whiteSpace = "pre-line";
+      el.appendChild(p);
+    }
   });
 }
 
