@@ -130,12 +130,34 @@ document.addEventListener("click", function (e) {
         .forEach(function (c) { track.appendChild(c.cloneNode(true)); });
     }
     if (reduce) return;
-    [].slice.call(track.children).forEach(function (c) {
-      var k = c.cloneNode(true); k.setAttribute("aria-hidden", "true"); track.appendChild(k);
+    var originals = [].slice.call(track.children).map(function (c) { return c.cloneNode(true); });
+    // Monta o loop: grupo A (repetido até ser mais largo que a tela) + cópia idêntica de A.
+    // A animação desloca exatamente -50% (largura de A), então o reinício é imperceptível.
+    function build() {
+      track.innerHTML = "";
+      function addSet(hidden) {
+        originals.forEach(function (o) {
+          var k = o.cloneNode(true);
+          if (hidden) k.setAttribute("aria-hidden", "true");
+          track.appendChild(k);
+        });
+      }
+      addSet(false);
+      var setW = track.scrollWidth, need = mq.clientWidth, copies = 1;
+      if (setW <= 0) return;
+      while (setW * copies < need + setW && copies < 20) { addSet(true); copies++; }
+      var groupN = track.children.length;
+      for (var i = 0; i < groupN; i++) {
+        var d = track.children[i].cloneNode(true); d.setAttribute("aria-hidden", "true"); track.appendChild(d);
+      }
+      mq.style.setProperty("--dur", Math.max(20, (track.scrollWidth / 2) / 40) + "s");
+    }
+    build();
+    var rt, lastW = mq.clientWidth;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { if (mq.clientWidth !== lastW) { lastW = mq.clientWidth; build(); } }, 200);
     });
-    function setSpeed() { var half = track.scrollWidth / 2; if (half > 0) mq.style.setProperty("--dur", Math.max(30, half / 40) + "s"); }
-    setSpeed();
-    window.addEventListener("resize", setSpeed);
     mq.classList.add("is-looping");
     var t;
     mq.addEventListener("touchstart", function () { clearTimeout(t); mq.classList.add("is-paused"); }, { passive: true });

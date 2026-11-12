@@ -172,3 +172,21 @@ details p{padding:0 22px 22px;line-height:1.7}
 #duvidas .eyebrow,#duvidas .t2{text-align:center}
 #duvidas .faq{margin-left:auto;margin-right:auto}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* Páginas legais e editor */
+.legal-page{background:var(--bg)}
+.legal-back{color:#CBD5E1;font-size:14px;font-weight:500;text-decoration:none}
+.legal-back:hover{color:var(--mint)}
+.legal{padding:40px 0 56px;min-height:60vh}
+.legal h1{font-size:clamp(26px,6vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:22px}
+.legal-body p{color:var(--soft);font-size:16.5px;line-height:1.7;margin-bottom:16px;max-width:760px}
+.legal-note{color:var(--soft);margin-bottom:18px}
+.adm-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.adm-tab{font:inherit;font-weight:600;font-size:14px;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--text);cursor:pointer}
+.adm-tab[aria-selected=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.adm-label{display:block;font-weight:600;margin-bottom:8px}
+.adm-text{width:100%;max-width:760px;font:inherit;font-size:15px;line-height:1.6;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--text);resize:vertical}
+.adm-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.adm-btn{font:inherit;font-weight:700;font-size:14px;padding:11px 18px;border-radius:999px;border:0;background:var(--teal);color:#fff;cursor:pointer;text-decoration:none}
+.adm-btn.adm-sec{background:#fff;color:var(--text);border:1px solid var(--line)}
+.adm-msg{margin-top:12px;color:var(--tealD);font-weight:600;min-height:1.5em}

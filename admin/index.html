@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Editar páginas legais | ON Solutions Brasil</title>
+<link rel="icon" type="image/png" href="../assets/img/favicon.png">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="legal-page">
+<main class="w legal">
+  <h1>Editar páginas legais</h1>
+  <p class="legal-note">Escolha a página, edite o texto e salve. Separe parágrafos com uma linha em branco.</p>
+  <div class="adm-tabs" role="tablist">
+    <button type="button" class="adm-tab" data-key="lgpd" role="tab">LGPD e Proteção de Dados</button>
+    <button type="button" class="adm-tab" data-key="politica-de-privacidade" role="tab">Política de Privacidade</button>
+  </div>
+  <label for="adm-text" class="adm-label" id="adm-label"></label>
+  <textarea id="adm-text" class="adm-text" rows="14"></textarea>
+  <div class="adm-actions">
+    <button type="button" id="adm-save" class="adm-btn">Salvar</button>
+    <button type="button" id="adm-reset" class="adm-btn adm-sec">Restaurar texto padrão</button>
+    <a id="adm-view" class="adm-btn adm-sec" href="../lgpd/" target="_blank" rel="noopener">Ver página pública</a>
+  </div>
+  <p id="adm-msg" class="adm-msg" role="status" aria-live="polite"></p>
+</main>
+<script src="../js/legal.js"></script>
+<script>
+(function () {
+  var key = "lgpd";
+  var ta = document.getElementById("adm-text"), msg = document.getElementById("adm-msg");
+  var tabs = [].slice.call(document.querySelectorAll(".adm-tab"));
+  function load(k) {
+    key = k;
+    tabs.forEach(function (t) { t.setAttribute("aria-selected", String(t.getAttribute("data-key") === k)); });
+    document.getElementById("adm-label").textContent = "Conteúdo: " + LEGAL_PAGES[k].title;
+    document.getElementById("adm-view").href = "../" + k + "/";
+    ta.value = legalGet(k); msg.textContent = "";
+  }
+  tabs.forEach(function (t) { t.addEventListener("click", function () { load(t.getAttribute("data-key")); }); });
+  document.getElementById("adm-save").addEventListener("click", function () {
+    try { legalSet(key, ta.value); msg.textContent = "Conteúdo de \u201c" + LEGAL_PAGES[key].title + "\u201d salvo."; }
+    catch (e) { msg.textContent = "Não foi possível salvar neste navegador."; }
+  });
+  document.getElementById("adm-reset").addEventListener("click", function () {
+    legalReset(key); ta.value = legalGet(key); msg.textContent = "Texto padrão restaurado.";
+  });
+  load("lgpd");
+})();
+</script>
+</body>
+</html>
